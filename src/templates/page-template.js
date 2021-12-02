@@ -6,6 +6,8 @@ import PaginationDefault from '../components/Pagination/variants/PaginationDefau
 import ContentsPageTemplate from '../containers/Contents/variants/ContentsPageTemplate'
 import { prepareSidebarLinks } from '../utils/prepareSidebarLinks'
 import Dropdown from '../components/Dropdown/variants/DropdownDefault'
+import SEO from '../components/SEO'
+import Layout from '../components/Layout/variations/LayoutDefault'
 
 export default function PageTemplate({ pageContext: { pageID, item }, data }) {
   const path = item.url.replace(/^\/+|\/+$/g, '')
@@ -17,12 +19,14 @@ export default function PageTemplate({ pageContext: { pageID, item }, data }) {
     modal: { value: modal },
     marketo_form: { value: marketo_form },
     dropdown: { value: dropdown },
+    title: { value: title },
   } = data.page.elements
   const { id, codename } = data.page.system
   const sidebarLinks = prepareSidebarLinks(menu)
 
   return (
-    <>
+    <Layout>
+      <SEO title={title} />
       <HeroSmall image={image.value ? image.value[0] : null} />
       <section className="section">
         <div className="container">
@@ -60,7 +64,7 @@ export default function PageTemplate({ pageContext: { pageID, item }, data }) {
           </div>
         </div>
       </section>
-    </>
+    </Layout>
   )
 }
 
@@ -72,6 +76,9 @@ export const pageQuery = graphql`
         codename
       }
       elements {
+        title {
+          value
+        }
         image {
           value {
             ...image
